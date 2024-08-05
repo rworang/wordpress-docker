@@ -2,17 +2,17 @@ services:
   wordpress:
     container_name: local-wp
     env_file: .env
-    # build:
-    # context: ./dockerfiles/wordpress
-    # image: local/wordpress:latest
-    image: wordpress:latest
+    build:
+      context: ./dockerfiles/wordpress
+    image: local/wordpress:latest
     restart: unless-stopped
     ports:
       - 8080:80
     depends_on:
       - mysql
+    # command: /usr/local/bin/wp-init.sh
     environment:
-      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
@@ -20,7 +20,7 @@ services:
       WP_DEBUG_LOG: ${WP_DEBUG_LOG}
     volumes:
       - wordpress:/var/www/html/
-      - bin:/usr/local/bin/
+      # - bin:/usr/local/bin/
       - plugins:/var/www/html/wp-content/plugins/
       - ./work_dir/plugins:/var/www/html/wp-content/plugins/
     networks:
@@ -36,6 +36,7 @@ services:
     user: 33:33
     depends_on:
       - mysql
+      - wordpress
     command: /usr/local/bin/wpcli-init.sh
     environment:
       WORDPRESS_DB_HOST: mysql
@@ -44,6 +45,7 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:/var/www/html/
+      - bin:/usr/local/bin/
       - plugins:/var/www/html/wp-content/plugins/
       - ./work_dir/plugins:/var/www/html/wp-content/plugins/
     networks:
@@ -56,8 +58,8 @@ services:
     image: mysql:latest
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
     networks:

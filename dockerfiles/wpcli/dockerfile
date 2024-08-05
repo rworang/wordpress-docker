@@ -11,5 +11,6 @@ RUN apk update --no-cache && \
 
 COPY init/wpcli-init.sh /usr/local/bin/wpcli-init.sh
 RUN chmod +x /usr/local/bin/wpcli-init.sh
+# RUN /usr/local/bin/wpcli-init.sh
 
 USER www-data
