@@ -1,0 +1,13 @@
+# WordPress Dockerfile: Create container from official WordPress image, basic customizations.
+
+FROM wordpress:latest
+
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  apt-get autoremove 
+
+COPY wp-config.php /var/www/html/wp-config.php
+
+COPY init/wp-init.sh /usr/local/bin/wp-init.sh
+RUN chmod +x /usr/local/bin/wp-init.sh
+RUN /usr/local/bin/wp-init.sh

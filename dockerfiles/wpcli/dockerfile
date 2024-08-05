@@ -1,0 +1,16 @@
+# WordPress Dockerfile: Create container from official WordPress image, basic customizations.
+
+FROM wordpress:cli
+
+USER root
+
+RUN apk update --no-cache && \
+  apk add --upgrade apk-tools && \
+  apk upgrade --no-cache && \
+  apk add --no-cache mysql-client mariadb-connector-c su-exec
+
+COPY init/wpcli-init.sh /usr/local/bin/wpcli-init.sh
+COPY init/wc-init.sh /usr/local/bin/wc-init.sh
+RUN chmod +x /usr/local/bin/wpcli-init.sh /usr/local/bin/wc-init.sh
+
+USER www-data
