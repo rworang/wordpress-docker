@@ -1,9 +1,11 @@
 services:
   wordpress:
     container_name: local-wp
-    build:
-      context: ./dockerfiles/wordpress
-    image: local/wordpress:latest
+    env_file: .env
+    # build:
+    # context: ./dockerfiles/wordpress
+    # image: local/wordpress:latest
+    image: wordpress:latest
     restart: unless-stopped
     ports:
       - 8080:80
@@ -19,12 +21,15 @@ services:
     volumes:
       - wordpress:/var/www/html/
       - bin:/usr/local/bin/
+      - plugins:/var/www/html/wp-content/plugins/
+      - ./work_dir/plugins:/var/www/html/wp-content/plugins/
     networks:
       development:
         ipv4_address: "172.20.0.2"
 
   wpcli:
     container_name: local_wpcli
+    env_file: .env
     build:
       context: ./dockerfiles/wpcli
     image: local/wordpress_cli:latest
@@ -39,12 +44,15 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:/var/www/html/
+      - plugins:/var/www/html/wp-content/plugins/
+      - ./work_dir/plugins:/var/www/html/wp-content/plugins/
     networks:
       development:
         ipv4_address: "172.20.0.3"
 
   mysql:
     container_name: local_mysql
+    env_file: .env
     image: mysql:latest
     restart: unless-stopped
     environment:
@@ -58,6 +66,7 @@ services:
 
   phpmyadmin:
     container_name: local_phpmyadmin
+    env_file: .env
     image: phpmyadmin:latest
     ports:
       - "8181:80"
@@ -72,6 +81,7 @@ services:
 
 volumes:
   wordpress:
+  plugins:
   bin:
   mysql:
 

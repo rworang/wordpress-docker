@@ -10,7 +10,6 @@ RUN apk update --no-cache && \
   apk add --no-cache mysql-client mariadb-connector-c su-exec
 
 COPY init/wpcli-init.sh /usr/local/bin/wpcli-init.sh
-COPY init/wc-init.sh /usr/local/bin/wc-init.sh
-RUN chmod +x /usr/local/bin/wpcli-init.sh /usr/local/bin/wc-init.sh
+RUN chmod +x /usr/local/bin/wpcli-init.sh
 
 USER www-data
