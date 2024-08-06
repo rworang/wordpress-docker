@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build pre-configured WordPress CLI Docker image
-        run: docker build dockerfiles/wpcli/Dockerfile --file dockerfile --tag local-wpcli:$(date +%s)
+        run: docker build ../../dockerfiles/wpcli/Dockerfile --file dockerfile --tag local-wpcli:$(date +%s)
