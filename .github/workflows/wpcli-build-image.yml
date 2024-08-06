@@ -1,0 +1,16 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build pre-configured WordPress CLI Docker image
+        run: docker build ./dockerfiles/wpcli/ --file dockerfile --tag local-wpcli:$(date +%s)
