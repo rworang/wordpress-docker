@@ -1,8 +1,10 @@
 # WordPress & WooCommerce Docker container
 
+<sup>\* This is a live document, changes to it will be made.</sup>
+
 This is a Docker container that runs a pre-configured WordPress installation, installs & activates WooCommerce and populates it with products.
 
-The WordPress install is set up with the default `admin_user:password` of `root:root`, the values of these, and more, can be set in the `.env` under `# Default WordPress Admin account` file.
+The WordPress install is set up with the default `admin_user:password` of `root:root`, the values of these, and more, can be set in the `.env` file under `# Default WordPress Admin account`.
 
 It is currently set-up for [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) plugin and expects the proper files for this plugin to be placed inside `work_dir/plugins/allergens-dietary-ictoria`.
 
