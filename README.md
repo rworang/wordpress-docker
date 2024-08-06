@@ -29,7 +29,7 @@ For the initial `docker-compose up` use these options
 
 `When using GitHub Desktop make sure to always run the build command from the `main` branch, unless changes are made to the Docker build process and related files.`
 
-### After initial docker-compose up
+### After initial build
 
 _Once the command is finished in the terminal check for the status of the setup in the `wordpress-docker` or `local_wpcli` container logs on Docker Desktop. The logs originate from the `dockerfiles/wpcli/wpcli-init.sh` Shell script, you can check against that if everything is loaded properly._
 
@@ -45,7 +45,7 @@ The rough outline of the steps of `wpcli-init.sh` are:
 > - Configure WooCommerce store
 > - Create test products (these use the [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) `meta_data`)
 > - Activate [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) plugin
->   <sub>\* the activaiton of plugins doens't always work, it might need manual activation</sub>
+>   <sub>\* the activation of plugins doens't always work, it might need manual activation</sub>
 
 ### Mounting the container
 
@@ -57,7 +57,7 @@ If after the initial `docker-compose up` command the `local/wordpress` and `loca
   docker-compose up -d
 ```
 
-### Unmounting container
+### Unmounting the container
 
 The `docker-compose down` command can be run as is, but if no essential data is stored on the volumes you might as well run the `--volumes` option to clear out the volumes.
 
@@ -67,7 +67,39 @@ The `docker-compose down` command can be run as is, but if no essential data is 
   docker-compose down -v
 ```
 
-### Troubleshooting
+---
+
+## Docker Images
+
+The `docker-compose.yml` builds local images of the `wordpress` and `wpcli` which are named `local/wordpress_cli` and `local/wordpress`. For general development these images only need to be built on the initial setup.
+
+_Currently the `wordpress` image is not necessary, the `docker-compose.yml` could be adjusted to use `wordpress:latest`, I have not fully tested this but it should work._
+
+_`If this or anything related to the builds gets changed make sure to run the proper commands to get a clean install.`_
+
+---
+
+## Docker Volumes
+
+`wordpress:/var/www/html`
+
+- Binds WordPress install directory to the `wordpress` volume, makes it easy to access files via Docker Desktop.
+
+`./work_dir/plugins/allergens-dietary-ictoria:/var/www/html/wp-content/plugins/allergens-dietary-ictoria`
+
+- Sets up a bind between `work_dir/plugins/allergens-dietary-ictoria` and the correct location of it inside the WordPress install directory.
+
+`plugins:/var/www/html/wp-content/plugins`
+
+- This binds the `plugins` volume to the plugins directory inside the WordPress install directory.
+
+The last two volumes **have to be in that order**, this will make sure the content of `work_dir/plugins/allergens-dietary-ictoria` gets copied into the WordPress installation before the `plugins` volume gets mounted.
+
+This is important because, if it is not done in this order the contents of the WordPress plugins directory can be copied into `work_dir/plugins`. These files then have different owners and can make it difficult to them, on WSL they can be removed by using `sudo rm -r work_dir/plugins/directory-or-file-name`.
+
+---
+
+## Troubleshooting
 
 If there are ever any errors or oddities, use `docker-compose down -v` and re-do `docker-compose up --build -d`. And if that does not fix it, these commands can be used to clean up Docker as there might be some corrupted data. It is important to wait for all commands to fully complete before visiting the site or changing any data.
 
@@ -117,43 +149,3 @@ docker container prune -f
 ```sh
 docker system prune -a -f
 ```
-
----
-
-## Docker Images
-
-The `docker-compose.yml` builds local images of the `wordpress` and `wpcli` which are named `local/wordpress_cli` and `local/wordpress`. For general development these images only need to be built on the initial setup.
-
-_Currently the `wordpress` image is not necessary, the `docker-compose.yml` could be adjusted to use `wordpress:latest`, I have not fully tested this but it should work._
-
-_`If this or anything related to the builds gets changed make sure to run the proper commands to get a clean install.`_
-
----
-
-## Docker Volumes
-
-`wordpress:/var/www/html`
-
-- Binds WordPress install directory to the `wordpress` volume, makes it easy to access files via Docker Desktop.
-
-`./work_dir/plugins/allergens-dietary-ictoria:/var/www/html/wp-content/plugins/allergens-dietary-ictoria`
-
-- Sets up a bind between `work_dir/plugins/allergens-dietary-ictoria` and the correct location of it inside the WordPress install directory.
-
-`plugins:/var/www/html/wp-content/plugins`
-
-- This binds the `plugins` volume to the plugins directory inside the WordPress install directory.
-
-The last two volumes **have to be in that order**, this will make sure the content of `work_dir/plugins/allergens-dietary-ictoria` gets copied into the WordPress installation before the `plugins` volume gets mounted.
-
-This is important because, if it is not done in this order the contents of the WordPress plugins directory can be copied into `work_dir/plugins`. These files then have different owners and can make it difficult to them, on WSL they can be removed by using `sudo rm -r work_dir/plugins/directory-or-file-name`.
-
----
-
-## docker-compose.yml
-
-Inside the container there are 4 services running
-`wordpress`
-`wpcli`
-`mysql`
-`phpmyadmin`
