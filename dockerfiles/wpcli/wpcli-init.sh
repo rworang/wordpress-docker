@@ -1,4 +1,40 @@
-#!/bin/sh
+#!/bin/bash
+
+generate_random_product() {
+    # Generate a random product name
+    product_name="Product $(shuf -i 1-100 -n 1)"
+    
+    # Generate a random price
+    price_type=$(shuf -e "round" "49" "99" -n 1)
+    if [ "$price_type" = "round" ]; then
+        product_price=$(shuf -i 1-100 -n 1)
+    else
+        product_price=$(shuf -i 1-99 -n 1).$price_type
+    fi
+
+    # Meta data
+    meta_id=160
+    key="allergens_dietary_ictoria"
+
+    # Define options
+    options="peanuts nuts sesame lupin soya mustard eggs dairy fish crustaceans molluscs gluten corn wheat celery sulfite alcohol vegetarian vegan halal pregnant"
+    
+    # Select random options
+    num_options=$(shuf -i 1-5 -n 1)
+    selected_options=$(echo $options | tr ' ' '\n' | shuf -n "$num_options" | tr '\n' ',' | sed 's/,$//')
+
+    value="[\"$(echo $selected_options | sed 's/,/","/g')\"]"
+
+    # Create product using WP CLI
+    wp wc product create \
+        --name="$product_name" \
+        --type="simple" \
+        --regular_price="$product_price" \
+        --meta_data="[ { \"id\": $meta_id, \"key\": \"$key\", \"value\": $value } ]" \
+        --path="${WORDPRESS_PATH}" \
+        --user="${WORDPRESS_ADMIN_USER}"
+}
+
 
 # Wait for the database to be ready
 echo "Checking database connection..."
@@ -6,8 +42,7 @@ until mysqladmin ping -h"$WORDPRESS_DB_HOST" --silent; do
     printf "."
     sleep 2
 done
-
-echo "Database is ready!"
+echo "Database is ready"
 
 # Print the path variable for debugging
 echo "WordPress path is set to ${WORDPRESS_PATH}"
@@ -56,16 +91,21 @@ fi
 
 # Install WooCommerce if not already installed
 if ! wp plugin is-installed woocommerce --path="${WORDPRESS_PATH}"; then
-
     echo "Installing WooCommerce..."
     wp plugin install woocommerce --path="${WORDPRESS_PATH}"
+    echo "WooCommerce installed and set up"
+else
+    echo "WooCommerce is already installed."
+fi
 
-    if ! wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
-        echo "Activating & setting up WooCommerce..."
-
+if ! wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
+        echo "Activating WooCommerce..."
         wp plugin activate woocommerce --path="${WORDPRESS_PATH}"
         echo "WooCommerce activated"
+fi
 
+
+if wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
         echo "WooCommerce configuring store..."
         wp option update woocommerce_store_address "${WOOCOMMERCE_STORE_ADDRESS}" --path="${WORDPRESS_PATH}"
         wp option update woocommerce_store_address_2 "${WOOCOMMERCE_STORE_ADDRESS_2}" --path="${WORDPRESS_PATH}"
@@ -75,67 +115,35 @@ if ! wp plugin is-installed woocommerce --path="${WORDPRESS_PATH}"; then
         wp option update woocommerce_currency "${WOOCOMMERCE_CURRENCY}" --path="${WORDPRESS_PATH}"
         wp option update woocommerce_price_thousand_sep "${WOOCOMMERCE_PRICE_THOUSAND_SEP}" --path="${WORDPRESS_PATH}"
         wp option update woocommerce_price_decimal_sep "${WOOCOMMERCE_PRICE_DECIMAL_SEP}" --path="${WORDPRESS_PATH}"
+        echo "WooCommerce store configured"
 
         # Create some products
         echo "WooCommerce creating products..."
-        wp wc product create --name="Product 1" --type="simple" --regular_price="19.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 2" --type="simple" --regular_price="29.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 3" --type="simple" --regular_price="12.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 4" --type="simple" --regular_price="14.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 5" --type="simple" --regular_price="34.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 6" --type="simple" --regular_price="49.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 7" --type="simple" --regular_price="29.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 8" --type="simple" --regular_price="12.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
-        wp wc product create --name="Product 9" --type="simple" --regular_price="14.99" --path="${WORDPRESS_PATH}" --user="${WORDPRESS_ADMIN_USER}"
+        max=${RANDOM_PRODUCT_AMOUNT}
+        for i in $(seq 1 $max)
+        do
+            echo "Creating product $i..."
+            generate_random_product
+        done
+        echo "WooCommerce products created"
 
-        # Trying to remove the setup wizard
-        # 
-        # This is not working.
-        #
-        # Why is it so difficult to skip that wizard.
-        # 
-        # echo "WooCommerce configuring settings/skipping setup wizard..."
-        # wp option pluck woocommerce_onboarding_profile true --path="${WORDPRESS_PATH}"
-        wp option pluck woocommerce_onboarding_profile --path="${WORDPRESS_PATH}"
-        wp option patch insert woocommerce_onboarding_profile 1 --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_show_marketplace_suggestions 'no' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_allow_tracking 'no' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_hidden 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_complete 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_welcome_modal_dismissed 'yes' --path="${WORDPRESS_PATH}"
+        # wp wc product create \
+        #     --name="Product 1" \
+        #     --type="simple" \
+        #     --regular_price="19.99" \
+        #     --meta_data='[{"id":160,"key":"allergens_dietary_ictoria","value":["peanuts","nuts","sesame","lupin","soya","mustard","eggs","dairy","fish","crustaceans","molluscs","gluten","corn","wheat","celery","sulfite","alcohol","vegetarian","vegan","halal","pregnant"]}]' \
+        #     --path="${WORDPRESS_PATH}" \
+        #     --user="${WORDPRESS_ADMIN_USER}"
+fi
 
-        # wp option update fresh_site "false" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_newly_installed "no" --path="${WORDPRESS_PATH}"
-
-        # wp option update woocommerce_api_enabled "true" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_allow_tracking 'no' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_show_marketplace_suggestions 'no' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_demo_store 'no' --path="${WORDPRESS_PATH}"
-
-        # wp option update woocommerce_onboarding_profile "true" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_onboarding_opt_in "false" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_enable_setup_wizard "false" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_prevent_automatic_wizard_redirect "false" --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_keep_completed 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_complete 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_extended_task_list_complete 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_reminder_bar_hidden 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_task_list_welcome_modal_dismissed 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_admin_customize_store_completed 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_admin_customize_store_survey_completed 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_admin_created_default_shipping_zones 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_admin_reviewed_default_shipping_zones 'yes' --path="${WORDPRESS_PATH}"
-
-        # wp option update woocommerce_customize_store_onboarding_tour_hidden 'yes' --path="${WORDPRESS_PATH}"
-        # wp option update woocommerce_onboarding_profile_completed 'true' --path="${WORDPRESS_PATH}"
-
-        # wp option patch insert woocommerce_onboarding_profile false --path="${WORDPRESS_PATH}"
-
-    fi
-    echo "WooCommerce installed and set up"
-else
-    echo "WooCommerce is already installed."
+if ! wp plugin is-active allergens-dietary-ictoria --path="${WORDPRESS_PATH}"; then
+        echo "Activating Allergens and Dietary plugin..."
+        wp plugin activate allergens-dietary-ictoria --path="${WORDPRESS_PATH}"
+        echo "Allergens and Dietary plugin activated"
 fi
 
 # Keep the container running
 tail -f /dev/null
+
+
+
