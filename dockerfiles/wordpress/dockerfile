@@ -8,6 +8,6 @@ RUN apt-get update && \
 
 COPY wp-config.php /var/www/html/wp-config.php
 
-COPY init/wp-init.sh /usr/local/bin/wp-init.sh
+COPY wp-init.sh /usr/local/bin/wp-init.sh
 RUN chmod +x /usr/local/bin/wp-init.sh
 # RUN /usr/local/bin/wp-init.sh
