@@ -25,22 +25,25 @@ For the initial `docker-compose up` use these options
   docker-compose up --build -d
 ```
 
+`When using GitHub Desktop make sure to always run the build command from the `main` branch, unless changes are made to the Docker build process and related files.`
+
 ### After initial docker-compose up
 
 _Once the command is finished in the terminal check for the status of the setup in the `wordpress-docker` or `local_wpcli` container logs on Docker Desktop. The logs originate from the `dockerfiles/wpcli/wpcli-init.sh` Shell script, you can check against that if everything is loaded properly._
 
 The rough outline of the steps of `wpcli-init.sh` are:
 
-- Wait for database connection
-- Download WordPress core if not downloaded
-- Set up `wp-config.php` if not found
-- Create database if not created
-- Install WordPress if not installed
-- Install WooCommerce if not installed
-- Activate WooCommerce if not installed
-- Configure WooCommerce store
-- Create test products (these use the [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) `meta_data`)
-- Activate [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) plugin
+> - Wait for database connection
+> - Download WordPress core if not downloaded
+> - Set up `wp-config.php` if not found
+> - Create database if not created
+> - Install WordPress if not installed
+> - Install WooCommerce if not installed
+> - Activate WooCommerce if not installed
+> - Configure WooCommerce store
+> - Create test products (these use the [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) `meta_data`)
+> - Activate [`allergens-dietary-ictoria`](https://github.com/Ictoria-BV/wp_allergenen) plugin
+>   <sub>\* the activaiton of plugins doens't always work, it might need manual activation</sub>
 
 ### Mounting the container
 
@@ -64,9 +67,12 @@ The `docker-compose down` command can be run as is, but if no essential data is 
 
 ### Troubleshooting
 
-If there are ever any errors or oddities use `docker-compose down -v` and re-do `docker-compose up --build -d`, if that does not fix it these commands can be used to clean up Docker as there might be some corrupted data. It is important to wait for all commands to fully complete before visiting the site or changing any data.
+If there are ever any errors or oddities, use `docker-compose down -v` and re-do `docker-compose up --build -d`. And if that does not fix it, these commands can be used to clean up Docker as there might be some corrupted data. It is important to wait for all commands to fully complete before visiting the site or changing any data.
 
-Be careful with these commands as some remove stored data, or do a general clean-up of unused data.
+**Error establishing a database connection**
+If you get this or a similar error when accessing the site check if `local_wpcli` is done setting up and refresh.
+
+_`Be careful with these commands as some remove stored data, or do a general clean-up of unused data.`_
 
 **Remove Existing Containers and Images**:
 
@@ -118,7 +124,7 @@ The `docker-compose.yml` builds local images of the `wordpress` and `wpcli` whic
 
 _Currently the `wordpress` image is not necessary, the `docker-compose.yml` could be adjusted to use `wordpress:latest`, I have not fully tested this but it should work._
 
-_If this or anything related to the builds gets changed make sure to run the proper commands to get a clean install._
+_`If this or anything related to the builds gets changed make sure to run the proper commands to get a clean install.`_
 
 ---
 
