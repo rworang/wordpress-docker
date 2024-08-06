@@ -10,6 +10,18 @@ It is currently set-up for [`allergens-dietary-ictoria`](https://github.com/Icto
 
 ---
 
+## Index
+
+- [Running & removing the container](#running-&-removing-the-container)
+- - [Initial build](#initial-build)
+- - [Mounting the container](#mounting-the-container)
+- - [Unmounting the container](#unmounting-the-container)
+- [Docker Images](#docker-images)
+- [Docker Volumes](#docker-volumes)
+- [Troubleshooting](#troubleshooting)
+
+---
+
 ## Running & removing the container
 
 To run the container you need to build the images for them to be used in the `docker-compose.yml`.
