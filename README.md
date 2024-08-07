@@ -107,10 +107,10 @@ By going to [`http://localhost:8080/wp-login.php`](http://localhost:8080/wp-logi
 
 - ### Stopping the container
 
-The `docker-compose down` command can be run as is, but if no essential data is stored on the volumes you might as well run the `-v` flag to clear out the volumes to save space.
+The `docker-compose down` command can be run as is.
 
 ```sh
-  docker-compose down -v
+  docker-compose down
 ```
 
 - ### Starting the container
@@ -134,14 +134,21 @@ If it doesn't, there is this [gist](https://gist.github.com/gitaarik/8735255) on
 Most errors/fails should be fixable with these commands:
 
 ```sh
+# remove volumes
 docker-compose down -v
+# re-run build process, makes it so wpcli-init.sh runs again
 docker-compose up --build -d
 
 or
 
+# remove used volumes
+# `wordpress-docker_wordpress` `wordpress-docker_plugins` `wordpress-docker_mysql`
 docker-compose down -v
+# remove local image `local/wordpress_cli`
 docker rmi -f local/wordpress_cli
+# re-build the `local/wordpress_cli` image with a fresh download of official `wordpress:cli`
 docker-compose build --no-cache
+# run the start command
 docker-compose up -d
 ```
 
