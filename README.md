@@ -22,6 +22,7 @@ These values, and more, can be found in the [`.env`](.env) file.
 - [Troubleshooting](#Troubleshooting)
   - [Plugin activation fails](#plugin-activation-fails)
   - [Other commands](#other-commands)
+- [Resources](#resources)
 - [Documentation](docs)
 
 ## WordPress plugins
@@ -194,3 +195,15 @@ docker container prune -f
 ```sh
 docker system prune -a -f
 ```
+
+## Resources
+
+- [Use Docker to create a local WordPress development environment](https://www.massolit-media.com/technical-writing/local-wordpress-development-environment-with-docker/)
+- [How To Install WordPress With Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose)
+- [Understanding CMD and ENTRYPOINT Differences in Docker](https://devtron.ai/blog/cmd-and-entrypoint-differences/)
+- [How Compose works](https://docs.docker.com/compose/compose-application-model/)
+- [Set environment variables within your container's environment](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
+- [WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
+- [Working with submodules](https://github.blog/open-source/git/working-with-submodules/)
+- [Docker Official Image: wordpress](https://hub.docker.com/_/wordpress)
+- [Git Submodules basic explanation](https://gist.github.com/gitaarik/8735255)
