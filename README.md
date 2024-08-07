@@ -22,6 +22,7 @@ These values, and more, can be found in the [`.env`](.env) file.
 - [Troubleshooting](#Troubleshooting)
   - [Plugin activation fails](#plugin-activation-fails)
   - [Other commands](#other-commands)
+- [Documentation](docs)
 
 ## WordPress plugins
 

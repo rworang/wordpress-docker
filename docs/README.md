@@ -1,4 +1,4 @@
-# WordPress & WooCommerce Docker container
+## WordPress & WooCommerce Docker container
 
 <sup>\* This is a live document, changes to it will be made.</sup>
 
