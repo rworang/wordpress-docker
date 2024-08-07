@@ -138,6 +138,12 @@ docker-compose build --no-cache
 docker image prune -f
 ```
 
+**Remove Unused Containers**:
+
+```sh
+docker container prune -f
+```
+
 **Remove Unused Volumes**:
 
 ```sh
@@ -148,12 +154,6 @@ docker volume prune -f
 
 ```sh
 docker network prune -f
-```
-
-**Remove Unused Containers**:
-
-```sh
-docker container prune -f
 ```
 
 **Remove All Unused Data**:
