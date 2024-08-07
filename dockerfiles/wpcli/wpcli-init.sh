@@ -99,51 +99,58 @@ else
 fi
 
 if ! wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
-        echo "Activating WooCommerce..."
-        wp plugin activate woocommerce --path="${WORDPRESS_PATH}"
+    echo "Activating WooCommerce..."
+    wp plugin activate woocommerce --path="${WORDPRESS_PATH}"
+    if wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
         echo "WooCommerce activated"
+    else
+        echo "Unable to activate WooCommerce plugin"
+    fi
 fi
 
 
 if wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
-        echo "WooCommerce configuring store..."
-        wp option update woocommerce_store_address "${WOOCOMMERCE_STORE_ADDRESS}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_store_address_2 "${WOOCOMMERCE_STORE_ADDRESS_2}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_store_city "${WOOCOMMERCE_STORE_CITY}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_store_country "${WOOCOMMERCE_STORE_COUNTRY}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_store_postcode "${WOOCOMMERCE_STORE_POSTCODE}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_currency "${WOOCOMMERCE_CURRENCY}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_price_thousand_sep "${WOOCOMMERCE_PRICE_THOUSAND_SEP}" --path="${WORDPRESS_PATH}"
-        wp option update woocommerce_price_decimal_sep "${WOOCOMMERCE_PRICE_DECIMAL_SEP}" --path="${WORDPRESS_PATH}"
-        echo "WooCommerce store configured"
+    echo "WooCommerce configuring store..."
+    wp option update woocommerce_store_address "${WOOCOMMERCE_STORE_ADDRESS}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_address_2 "${WOOCOMMERCE_STORE_ADDRESS_2}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_city "${WOOCOMMERCE_STORE_CITY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_country "${WOOCOMMERCE_STORE_COUNTRY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_postcode "${WOOCOMMERCE_STORE_POSTCODE}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_currency "${WOOCOMMERCE_CURRENCY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_price_thousand_sep "${WOOCOMMERCE_PRICE_THOUSAND_SEP}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_price_decimal_sep "${WOOCOMMERCE_PRICE_DECIMAL_SEP}" --path="${WORDPRESS_PATH}"
+    echo "WooCommerce store configured"
 
-        # Create some products
-        echo "WooCommerce creating products..."
-        max=${RANDOM_PRODUCT_AMOUNT}
-        for i in $(seq 1 $max)
-        do
-            echo "Creating product $i..."
-            generate_random_product
-        done
-        echo "WooCommerce products created"
+    # Create some products
+    echo "WooCommerce creating products..."
+    max=${RANDOM_PRODUCT_AMOUNT}
+    for i in $(seq 1 $max)
+    do
+        echo "Creating product $i..."
+        generate_random_product
+    done
+    echo "WooCommerce products created"
 
-        # wp wc product create \
-        #     --name="Product 1" \
-        #     --type="simple" \
-        #     --regular_price="19.99" \
-        #     --meta_data='[{"id":160,"key":"allergens_dietary_ictoria","value":["peanuts","nuts","sesame","lupin","soya","mustard","eggs","dairy","fish","crustaceans","molluscs","gluten","corn","wheat","celery","sulfite","alcohol","vegetarian","vegan","halal","pregnant"]}]' \
-        #     --path="${WORDPRESS_PATH}" \
-        #     --user="${WORDPRESS_ADMIN_USER}"
+    # wp wc product create \
+    #     --name="Product 1" \
+    #     --type="simple" \
+    #     --regular_price="19.99" \
+    #     --meta_data='[{"id":160,"key":"allergens_dietary_ictoria","value":["peanuts","nuts","sesame","lupin","soya","mustard","eggs","dairy","fish","crustaceans","molluscs","gluten","corn","wheat","celery","sulfite","alcohol","vegetarian","vegan","halal","pregnant"]}]' \
+    #     --path="${WORDPRESS_PATH}" \
+    #     --user="${WORDPRESS_ADMIN_USER}"
 fi
 
 if ! wp plugin is-active allergens-dietary-ictoria --path="${WORDPRESS_PATH}"; then
         echo "Activating Allergens and Dietary plugin..."
         wp plugin activate allergens-dietary-ictoria --path="${WORDPRESS_PATH}"
-        echo "Allergens and Dietary plugin activated"
+    if wp plugin is-active allergens-dietary-ictoria --path="${WORDPRESS_PATH}"; then
+            echo "Allergens and Dietary plugin activated"
+    else
+            echo "Unable to activate Allergens and Dietry plugin"
+    fi
 fi
 
 # Keep the container running
 tail -f /dev/null
-
 
 
