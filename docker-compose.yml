@@ -53,7 +53,7 @@ services:
         apk upgrade --no-cache && \n
         apk add --no-cache mysql-client mariadb-connector-c dos2unix && \n
         pwd && \n
-        cp dockerfiles/wpcli/wp-config.php ${WORDPRESS_PATH}/wp-config.php && \n
+        cp /usr/local/bin/wpcli/wp-config.php ${WORDPRESS_PATH}/wp-config.php && \n
         dos2unix /usr/local/bin/wpcli/setup_wpcli.sh && \n
         chmod +x /usr/local/bin/wpcli/setup_wpcli.sh && \n
         su -s /bin/sh -c '/usr/local/bin/wpcli/setup_wpcli.sh' www-data",
