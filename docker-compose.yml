@@ -4,6 +4,7 @@ services:
     env_file: .env
     image: wordpress:latest
     restart: unless-stopped
+    user: www-data
     ports:
       - 8080:80
     depends_on:
@@ -13,12 +14,12 @@ services:
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-      WP_DEBUG: ${WP_DEBUG}
-      WP_DEBUG_LOG: ${WP_DEBUG_LOG}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - debug:/var/www/html/wp-content/debug.log
     networks:
       development:
         ipv4_address: "172.20.0.2"
@@ -26,14 +27,38 @@ services:
   wpcli:
     container_name: local_wpcli
     env_file: .env
-    build:
-      context: ./dockerfiles/wpcli
-    image: local/wordpress_cli:latest
-    user: 33:33
+    image: wordpress:cli
+    restart: unless-stopped
+    user: root
     depends_on:
       - mysql
       - wordpress
-    command: ["/usr/local/bin/wpcli-init.sh"]
+    # command:
+    #   [
+    #     "/bin/sh",
+    #     "-c",
+    #     "until mysqladmin ping -h'${WORDPRESS_DB_HOST}' --silent; do\n printf 'Waiting for MySQL...'\n sleep 2\n done\n chmod +x /usr/local/bin/wpcli/setup_wpcli.sh && /usr/local/bin/wpcli/setup_wpcli.sh",
+    #   ]
+    # command:
+    #   [
+    #     "/bin/sh",
+    #     "-c",
+    #     "until mysqladmin ping -h'${WORDPRESS_DB_HOST}' --silent; do\n printf 'Waiting for MySQL...'\n sleep 2\n done",
+    #   ]
+    command: [
+        "/bin/sh",
+        "-c",
+        "apk update --no-cache && \n
+        apk add --upgrade apk-tools && \n
+        apk upgrade --no-cache && \n
+        apk add --no-cache mysql-client mariadb-connector-c dos2unix && \n
+        pwd && \n
+        cp /usr/local/bin/wpcli/wp-config.php ${WORDPRESS_PATH}/wp-config.php && \n
+        dos2unix /usr/local/bin/wpcli/setup_wpcli.sh && \n
+        chmod +x /usr/local/bin/wpcli/setup_wpcli.sh && \n
+        su -s /bin/sh -c '/usr/local/bin/wpcli/setup_wpcli.sh' www-data",
+      ]
+    # command: ["/usr/local/bin/wpcli/init/setup_wpcli.sh"]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -41,8 +66,10 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
+      - ./dockerfiles/wpcli:/usr/local/bin/wpcli
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - debug:/var/www/html/wp-content/debug.log
     networks:
       development:
         ipv4_address: "172.20.0.3"
@@ -65,6 +92,7 @@ services:
     container_name: local_phpmyadmin
     env_file: .env
     image: phpmyadmin:latest
+    restart: unless-stopped
     ports:
       - "8181:80"
     depends_on:
@@ -79,6 +107,7 @@ services:
 volumes:
   wordpress:
   plugins:
+  debug:
   mysql:
 
 networks:
