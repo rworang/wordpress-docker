@@ -3,3 +3,4 @@ __old__.*
 # /work_dir/
 /work_dir/plugins/allergens-dietary-ictoria/*
 !/work_dir/plugins/allergens-dietary-ictoria/plugin-files-go-here
+dockerfiles/wpcli/wpcli-init.sh.bak
