@@ -11,6 +11,8 @@ The container includes a pre-configured WordPress admin account:
 
 These credentials, along with other configuration details, can be found in the [`.env`](.env) file.
 
+## The image build has been removed, the container can now just be started using `docker-compose up -d` and stopped via `docker-compose down -v`
+
 ## Table of Contents
 
 - [WordPress Plugins](#wordpress-plugins)
