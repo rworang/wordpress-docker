@@ -1,4 +1,5 @@
 #!/bin/bash
+
 generate_random_product() {
     # Generate a random product name
     product_name="Product $(shuf -i 1-100 -n 1)"
@@ -25,14 +26,16 @@ generate_random_product() {
     value="[\"$(echo $selected_options | sed 's/,/","/g')\"]"
 
     # Create product using WP CLI
-    su -s /bin/sh -c 'wp wc product create \n
-        --name="$product_name" \n
-        --type="simple" \n
-        --regular_price="$product_price" \n
-        --meta_data="[ { \"id\": $meta_id, \"key\": \"$key\", \"value\": $value } ]" \n
-        --path="${WORDPRESS_PATH}" \n
-        --user="${WORDPRESS_ADMIN_USER}"' www-data
+    wp wc product create \
+        --name="$product_name" \
+        --type="simple" \
+        --regular_price="$product_price" \
+        --meta_data="[ { \"id\": $meta_id, \"key\": \"$key\", \"value\": $value } ]" \
+        --path="${WORDPRESS_PATH}" \
+        --user="${WORDPRESS_ADMIN_USER}"
 }
+
+ls -ld "${WORDPRESS_PATH}"
 
 
 # Wait for the database to be ready
@@ -49,39 +52,39 @@ echo "WordPress path is set to ${WORDPRESS_PATH}"
 # Download WordPress if not already downloaded
 if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
     echo "Downloading WordPress..."
-    su -s /bin/sh -c 'wp core download --path="${WORDPRESS_PATH}"' www-data
+    wp core download --path="${WORDPRESS_PATH}"
 fi
 
 
 # Create wp-config.php if it does not exist
 if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
     echo "Creating wp-config.php..."
-    su -s /bin/sh -c 'wp config create \
+    wp config create \
         --dbname="${WORDPRESS_DB_NAME}" \
         --dbuser="${WORDPRESS_DB_USER}" \
         --dbpass="${WORDPRESS_DB_PASSWORD}" \
         --dbhost="${WORDPRESS_DB_HOST}" \
-        --path="${WORDPRESS_PATH}"' www-data
+        --path="${WORDPRESS_PATH}"
 fi
 
 
 # Create the database if it does not exist
 if ! wp db check --path="${WORDPRESS_PATH}"; then
     echo "Creating database..."
-    su -s /bin/sh -c 'wp db create --path="${WORDPRESS_PATH}"' www-data
+    wp db create --path="${WORDPRESS_PATH}"
 fi
 
 
 # Install WordPress if not already installed
 if ! wp core is-installed --path="${WORDPRESS_PATH}"; then
     echo "Installing WordPress..."
-    su -s /bin/sh -c 'wp core install \n
-        --url="${WORDPRESS_SITE_URL}" \n
-        --title="${WORDPRESS_SITE_TITLE}" \n
-        --admin_user="${WORDPRESS_ADMIN_USER}" \n
-        --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \n
-        --admin_email="${WORDPRESS_ADMIN_EMAIL}" \n
-        --path="${WORDPRESS_PATH}"' www-data
+    wp core install \
+        --url="${WORDPRESS_SITE_URL}" \
+        --title="${WORDPRESS_SITE_TITLE}" \
+        --admin_user="${WORDPRESS_ADMIN_USER}" \
+        --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
+        --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
+        --path="${WORDPRESS_PATH}"
     echo "WordPress installed!"
 else
     echo "WordPress is already installed."
@@ -91,7 +94,7 @@ fi
 # Install WooCommerce if not already installed
 if ! wp plugin is-installed woocommerce --path="${WORDPRESS_PATH}"; then
     echo "Installing WooCommerce..."
-    su -s /bin/sh -c 'wp plugin install woocommerce --path="${WORDPRESS_PATH}"' www-data
+    wp plugin install woocommerce --path="${WORDPRESS_PATH}"
     echo "WooCommerce installed and set up"
 else
     echo "WooCommerce is already installed."
@@ -99,7 +102,7 @@ fi
 
 if ! wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
     echo "Activating WooCommerce..."
-    su -s /bin/sh -c 'wp plugin activate woocommerce --path="${WORDPRESS_PATH}"' www-data
+    wp plugin activate woocommerce --path="${WORDPRESS_PATH}"
     if wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
         echo "WooCommerce activated"
     else
@@ -110,14 +113,14 @@ fi
 
 if wp plugin is-active woocommerce --path="${WORDPRESS_PATH}"; then
     echo "WooCommerce configuring store..."
-    su -s /bin/sh -c 'wp option update woocommerce_store_address "${WOOCOMMERCE_STORE_ADDRESS}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_store_address_2 "${WOOCOMMERCE_STORE_ADDRESS_2}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_store_city "${WOOCOMMERCE_STORE_CITY}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_store_country "${WOOCOMMERCE_STORE_COUNTRY}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_store_postcode "${WOOCOMMERCE_STORE_POSTCODE}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_currency "${WOOCOMMERCE_CURRENCY}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_price_thousand_sep "${WOOCOMMERCE_PRICE_THOUSAND_SEP}" --path="${WORDPRESS_PATH}"' www-data
-    su -s /bin/sh -c 'wp option update woocommerce_price_decimal_sep "${WOOCOMMERCE_PRICE_DECIMAL_SEP}" --path="${WORDPRESS_PATH}"' www-data
+    wp option update woocommerce_store_address "${WOOCOMMERCE_STORE_ADDRESS}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_address_2 "${WOOCOMMERCE_STORE_ADDRESS_2}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_city "${WOOCOMMERCE_STORE_CITY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_country "${WOOCOMMERCE_STORE_COUNTRY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_store_postcode "${WOOCOMMERCE_STORE_POSTCODE}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_currency "${WOOCOMMERCE_CURRENCY}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_price_thousand_sep "${WOOCOMMERCE_PRICE_THOUSAND_SEP}" --path="${WORDPRESS_PATH}"
+    wp option update woocommerce_price_decimal_sep "${WOOCOMMERCE_PRICE_DECIMAL_SEP}" --path="${WORDPRESS_PATH}"
     echo "WooCommerce store configured"
 
     # Create some products
@@ -141,7 +144,7 @@ fi
 
 if ! wp plugin is-active allergens-dietary-ictoria --path="${WORDPRESS_PATH}"; then
         echo "Activating Allergens and Dietary plugin..."
-        su -s /bin/sh -c 'wp plugin activate allergens-dietary-ictoria --path="${WORDPRESS_PATH}"' www-data
+        wp plugin activate allergens-dietary-ictoria --path="${WORDPRESS_PATH}"
     if wp plugin is-active allergens-dietary-ictoria --path="${WORDPRESS_PATH}"; then
             echo "Allergens and Dietary plugin activated"
     else
