@@ -3,7 +3,7 @@ services:
     container_name: local_wp
     env_file: .env
     image: wordpress:latest
-    restart: unless-stopped
+    # restart: unless-stopped
     user: www-data
     ports:
       - 8080:80
@@ -28,7 +28,7 @@ services:
     container_name: local_wpcli
     env_file: .env
     image: wordpress:cli
-    restart: unless-stopped
+    # restart: unless-stopped
     user: root
     depends_on:
       - mysql
@@ -92,7 +92,7 @@ services:
     container_name: local_phpmyadmin
     env_file: .env
     image: phpmyadmin:latest
-    restart: unless-stopped
+    # restart: unless-stopped
     ports:
       - "8181:80"
     depends_on:
