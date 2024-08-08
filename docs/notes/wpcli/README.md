@@ -18,3 +18,7 @@ Split `wpcli-init.sh` into separate files
     #     --path="${WORDPRESS_PATH}" \
     #     --user="${WORDPRESS_ADMIN_USER}"
 ```
+
+- add better logging
+
+https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/

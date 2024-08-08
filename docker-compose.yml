@@ -13,8 +13,7 @@ services:
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-      WP_DEBUG: ${WP_DEBUG}
-      WP_DEBUG_LOG: ${WP_DEBUG_LOG}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
@@ -33,7 +32,7 @@ services:
     depends_on:
       - mysql
       - wordpress
-    command: ["/usr/local/bin/wpcli-init.sh"]
+    command: ["/usr/local/bin/wpcli/setup_wpcli.sh"]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -43,6 +42,8 @@ services:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - ./dockerfiles/wpcli:/usr/local/bin/wpcli
+      - wpcli:/usr/local/bin/wpcli
     networks:
       development:
         ipv4_address: "172.20.0.3"
@@ -80,6 +81,7 @@ volumes:
   wordpress:
   plugins:
   mysql:
+  wpcli:
 
 networks:
   development:
