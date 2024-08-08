@@ -43,7 +43,7 @@ These credentials, along with other configuration details, can be found in the [
 ### WooCommerce
 
 The WordPress instance includes WooCommerce, which is downloaded and installed using the [WordPress CLI](https://developer.wordpress.org/cli/commands/).  
-_Note: You need to skip the WooCommerce setup wizard and select a country._
+_Note: You still need to skip the WooCommerce setup wizard and select a country._
 
 ### Allergens and Dietary
 
@@ -160,11 +160,15 @@ For more detailed commands, refer to the [Docker documentation](https://docs.doc
 
 ## Resources
 
-- [Local WordPress Development with Docker](https://www.massolit-media.com/technical-writing/local-wordpress-development-environment-with-docker/)
-- [Install WordPress with Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose)
-- [CMD vs ENTRYPOINT in Docker](https://devtron.ai/blog/cmd-and-entrypoint-differences/)
+- [Use Docker to create a local WordPress development environment](https://www.massolit-media.com/technical-writing/local-wordpress-development-environment-with-docker/)
+- [How To Install WordPress With Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose)
+- [Understanding CMD and ENTRYPOINT Differences in Docker](https://devtron.ai/blog/cmd-and-entrypoint-differences/)
+- [How Compose works](https://docs.docker.com/compose/compose-application-model/)
+- [Set environment variables within your container's environment](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
 - [WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
-- [Working with Git Submodules](https://github.blog/open-source/git/working-with-submodules/)
+- [Working with submodules](https://github.blog/open-source/git/working-with-submodules/)
+- [Docker Official Image: wordpress](https://hub.docker.com/_/wordpress)
+- [Git Submodules basic explanation](https://gist.github.com/gitaarik/8735255)
 
 ## Documentation
 
