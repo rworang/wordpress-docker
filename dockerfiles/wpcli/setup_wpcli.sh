@@ -57,15 +57,20 @@ fi
 
 
 # Create wp-config.php if it does not exist
-if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
-    echo "Creating wp-config.php..."
-    wp config create \
-        --dbname="${WORDPRESS_DB_NAME}" \
-        --dbuser="${WORDPRESS_DB_USER}" \
-        --dbpass="${WORDPRESS_DB_PASSWORD}" \
-        --dbhost="${WORDPRESS_DB_HOST}" \
-        --path="${WORDPRESS_PATH}"
-fi
+# if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
+    # echo "Creating wp-config.php..."
+    # wp config create \
+    #     --dbname="${WORDPRESS_DB_NAME}" \
+    #     --dbuser="${WORDPRESS_DB_USER}" \
+    #     --dbpass="${WORDPRESS_DB_PASSWORD}" \
+    #     --dbhost="${WORDPRESS_DB_HOST}" \
+    #     --path="${WORDPRESS_PATH}"
+
+    # wp config set WP_DEBUG ${WORDPRESS_DEBUG}	
+    # wp config set WP_DEBUG_LOG ${WORDPRESS_DEBUG_LOG}	
+    # wp config set WP_DEBUG_DISPLAY ${WORDPRESS_DEBUG_DISPLAY}	
+    # wp config set SCRIPT_DEBUG ${WORDPRESS_SCRIPT_DEBUG}	
+# fi
 
 
 # Create the database if it does not exist
