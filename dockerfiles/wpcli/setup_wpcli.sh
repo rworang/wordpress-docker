@@ -35,6 +35,8 @@ generate_random_product() {
         --user="${WORDPRESS_ADMIN_USER}"
 }
 
+ls -ld "${WORDPRESS_PATH}"
+
 
 # Wait for the database to be ready
 echo "Checking database connection..."

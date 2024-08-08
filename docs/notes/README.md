@@ -6,6 +6,8 @@ https://stackoverflow.com/questions/37632568/git-template-repo-pull-into-new-rep
 
 https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
 
+https://github.com/docker-library/docs/tree/388783024e937bd87ee2f786fa308dc2ff123099/wordpress#how-to-use-this-image
+
 # GitHub Markdown stuff
 
 ## Basic writing and formatting syntax
