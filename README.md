@@ -1,13 +1,3 @@
-<!--
-ChatGPT reformatting of current README.md
-Needs to be checked
-:
-"Your README is thorough and informative, but it could benefit from some formatting and conciseness to make it easier to read and navigate. Here's a reformatted version that aims to balance detail with readability:"
-
----
-
- -->
-
 # WordPress & WooCommerce Docker Container
 
 This Docker container runs a self-hosted WordPress site tailored for development. The site is available at `http://localhost:8080/`, and phpMyAdmin can be accessed at `http://localhost:8181/`.
