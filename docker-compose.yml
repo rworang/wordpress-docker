@@ -25,14 +25,12 @@ services:
   wpcli:
     container_name: local_wpcli
     env_file: .env
-    build:
-      context: ./dockerfiles/wpcli
-    image: local/wordpress_cli:latest
+    image: wordpress:cli
     user: 33:33
     depends_on:
       - mysql
       - wordpress
-    command: ["/usr/local/bin/wpcli/setup_wpcli.sh"]
+    command: ["/usr/local/bin/wpcli/init/setup_wpcli.sh"]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -43,7 +41,6 @@ services:
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
       - ./dockerfiles/wpcli:/usr/local/bin/wpcli
-      - wpcli:/usr/local/bin/wpcli
     networks:
       development:
         ipv4_address: "172.20.0.3"
@@ -81,7 +78,6 @@ volumes:
   wordpress:
   plugins:
   mysql:
-  wpcli:
 
 networks:
   development:
