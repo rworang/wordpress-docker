@@ -28,4 +28,4 @@ fi
 
 # could add a check here to see if everything is set up already
 # now I have it on the separate setups, so I don't need to do it here
-/usr/local/bin/init/setup.sh
+su -s /bin/sh -c '/usr/local/bin/init/setup.sh' root
