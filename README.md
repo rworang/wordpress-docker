@@ -52,6 +52,7 @@ Clone the repository with submodules:
 ```sh
 git clone --recurse-submodules https://github.com/rworang/wordpress-docker.git
 ```
+_Note: You can also use the Template option in the browser, this might be more suited for use during theme/plugin development as it creates your own repository with no commit history._
 
 Ensure submodules are updated:
 
