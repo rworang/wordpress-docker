@@ -1,0 +1,97 @@
+services:
+  wordpress:
+    container_name: local_wp
+    env_file: .env
+    image: wordpress:latest
+    user: www-data
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    volumes:
+      - wordpress:${WORDPRESS_PATH}/
+      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+      - plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - debug:/var/www/html/wp-content/debug.log
+    networks:
+      development:
+        ipv4_address: "172.20.0.2"
+
+  wpcli:
+    container_name: local_wpcli
+    env_file: .env
+    image: wordpress:cli
+    user: root
+    depends_on:
+      - mysql
+      - wordpress
+    command: [
+        "/bin/sh",
+        "-c",
+        "dos2unix /usr/local/bin/init/setup-alpine.sh && \
+        chmod +x /usr/local/bin/init/setup-alpine.sh && \
+        /usr/local/bin/init/setup-alpine.sh",
+      ]
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    volumes:
+      - wordpress:${WORDPRESS_PATH}/
+      - ./dockerfiles/wpcli/init:/usr/local/bin/init
+      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+      - bin:/usr/local/bin
+      - plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - debug:/var/www/html/wp-content/debug.log
+    networks:
+      development:
+        ipv4_address: "172.20.0.3"
+
+  mysql:
+    container_name: local_mysql
+    env_file: .env
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      development:
+        ipv4_address: "172.20.0.4"
+
+  phpmyadmin:
+    container_name: local_phpmyadmin
+    env_file: .env
+    image: phpmyadmin:latest
+    ports:
+      - "8181:80"
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    networks:
+      development:
+        ipv4_address: "172.20.0.5"
+
+volumes:
+  wordpress:
+  plugins:
+  bin:
+  debug:
+  mysql:
+
+networks:
+  development:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.0.0/24"
