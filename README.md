@@ -57,7 +57,7 @@ The reason this is a template is because when working with multiple accounts it'
 
 ### Starting the Container
 
-If the `local_wpcli` image is built, start the container with:
+Start the container with wait for it to be finished, this can be seen in Docker under the logs of `local/wpcli`:
 
 ```sh
 docker-compose up -d # detach
@@ -70,7 +70,7 @@ To stop the container, run:
 ```sh
 docker-compose down
 or
-docker-compose down -v # to remove the volumes
+docker-compose down -v # to remove the volumes, this will need to re-do the setup
 ```
 
 ## Documentation
