@@ -66,7 +66,7 @@ docker-compose up -d # detach
 
 ### Starting the Container DEV
 
-For development you can run the container in watch mode, this looks for file changes and enables hot-reloading. _This can't run in detach mode. `ctrl+c` stops the container, you will need to run the stop container with `-v` to clear volumes._
+For development you can run the container in watch mode, this looks for file changes and enables hot-reloading. _This can't run in detach mode. `ctrl+c` stops the container._
 
 ```sh
 docker compose --profile develop up --watch
