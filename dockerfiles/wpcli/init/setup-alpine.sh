@@ -4,7 +4,7 @@
 apk update --no-cache
 apk add --upgrade apk-tools
 apk upgrade --no-cache
-apk add --no-cache mysql-client mariadb-connector-c dos2unix bash jq
+apk add --no-cache mysql-client mariadb-connector-c dos2unix bash
 
 if [ ! -f /usr/local/bin/alpine-setup-completed ]; then
 
