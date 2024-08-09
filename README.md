@@ -63,6 +63,14 @@ Start the container with wait for it to be finished, this can be seen in Docker 
 docker-compose up -d # detach
 ```
 
+### Starting the Container [DEV]
+
+For development you can run the container in watch mode, this looks for file changes and enables hot-reloading. _This can't run in detach mode. `ctrl+c` stops the container, you will need to run the stop container with `-v` to clear volumes._
+
+```sh
+docker compose --profile develop up --watch
+```
+
 ### Stopping the Container
 
 To stop the container, run:
@@ -70,7 +78,7 @@ To stop the container, run:
 ```sh
 docker-compose down
 or
-docker-compose down -v # to remove the volumes, this will need to re-do the setup
+docker-compose down -v # to remove the volumes, this will need to re-do the setup | [DEV] 
 ```
 
 ## Documentation
