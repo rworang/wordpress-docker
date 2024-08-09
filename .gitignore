@@ -5,4 +5,6 @@ __old__.*
 /work_dir/plugins/allergens-dietary-ictoria/*
 !/work_dir/plugins/allergens-dietary-ictoria/plugin-files-go-here
 work_dir/plugins/allergens-dietary-ictoria
+work_dir/allergens-dietary-ictoria
+allergens-dietary-ictoria
 .gitmodules
