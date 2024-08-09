@@ -3,7 +3,6 @@ services:
     container_name: local_wp
     env_file: .env
     image: wordpress:latest
-    # restart: unless-stopped
     user: www-data
     ports:
       - 8080:80
@@ -14,10 +13,6 @@ services:
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-      # WP_DEBUG: ${WORDPRESS_DEBUG}
-      # WP_DEBUG_LOG: ${WORDPRESS_DEBUG_LOG}
-      # WP_DEBUG_DISPLAY: ${WORDPRESS_DEBUG_DISPLAY}
-      # SCRIPT_DEBUG: ${WORDPRESS_SCRIPT_DEBUG}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
@@ -31,7 +26,6 @@ services:
     container_name: local_wpcli
     env_file: .env
     image: wordpress:cli
-    # restart: unless-stopped
     user: root
     depends_on:
       - mysql
@@ -39,14 +33,10 @@ services:
     command: [
         "/bin/sh",
         "-c",
-        "apk update --no-cache && \n
-        apk add --upgrade apk-tools && \n
-        apk upgrade --no-cache && \n
-        apk add --no-cache mysql-client mariadb-connector-c dos2unix && \n
-        cp /usr/local/bin/wpcli/wp-config.php ${WORDPRESS_PATH}/wp-config.php && echo 'copied wp-config.php' && \n
-        dos2unix /usr/local/bin/wpcli/setup_wpcli.sh && \n
-        chmod +x /usr/local/bin/wpcli/setup_wpcli.sh && \n
-        su -s /bin/sh -c '/usr/local/bin/wpcli/setup_wpcli.sh' www-data",
+        "dos2unix /usr/local/bin/init/setup-alpine.sh && \
+        chmod +x /usr/local/bin/init/setup-alpine.sh && \
+        /usr/local/bin/init/setup-alpine.sh && \
+        su -s /bin/sh -c '/usr/local/bin/init/setup.sh' www-data",
       ]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
@@ -55,7 +45,7 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./dockerfiles/wpcli:/usr/local/bin/wpcli
+      - ./dockerfiles/wpcli/init:/usr/local/bin/init
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
       - debug:/var/www/html/wp-content/debug.log
@@ -81,7 +71,6 @@ services:
     container_name: local_phpmyadmin
     env_file: .env
     image: phpmyadmin:latest
-    # restart: unless-stopped
     ports:
       - "8181:80"
     depends_on:
