@@ -17,10 +17,15 @@ services:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
-      - debug:/var/www/html/wp-content/debug.log
     networks:
       development:
         ipv4_address: "172.20.0.2"
+
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./work_dir/plugins/${PLUGIN_NAME}
+          target: ${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
 
   wpcli:
     container_name: local_wpcli
@@ -48,10 +53,15 @@ services:
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - bin:/usr/local/bin
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
-      - debug:/var/www/html/wp-content/debug.log
     networks:
       development:
         ipv4_address: "172.20.0.3"
+
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./dockerfiles/wpcli/init
+          target: /usr/local/bin/init
 
   mysql:
     container_name: local_mysql

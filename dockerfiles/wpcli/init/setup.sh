@@ -32,5 +32,8 @@ fi
 # Enable local plugins
 # su -s /bin/sh -c 'source /usr/local/bin/init/activate-plugins.sh' www-data
 
+cp /usr/local/bin/init/wp-config.php ${WORDPRESS_PATH}/wp-config.php
+echo 'copied wp-config.php'
+
 # Keep the container running
 tail -f /dev/null

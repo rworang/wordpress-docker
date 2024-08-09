@@ -2,7 +2,7 @@ __old__.*
 *.bak
 
 # /work_dir/
-/work_dir/plugins/event-display-plugin
+/work_dir/plugins/simple-event-plugin
 /work_dir/plugins/PLUGIN_NAME/*
 !/work_dir/plugins/PLUGIN_NAME/plugin-files-go-here
 .gitmodules
