@@ -18,6 +18,7 @@ These credentials, along with other configuration details, can be found in the [
   - [Allergens and Dietary](#allergens-and-dietary)
 - [Using the Container](#using-the-container)
   - [Starting the Container](#starting-the-container)
+  - [Starting the Container DEV](#starting-the-container-dev)
   - [Stopping the Container](#stopping-the-container)
 - [Documentation](#documentation)
 - [Resources](#resources)
@@ -63,7 +64,7 @@ Start the container with wait for it to be finished, this can be seen in Docker 
 docker-compose up -d # detach
 ```
 
-### Starting the Container [DEV]
+### Starting the Container DEV
 
 For development you can run the container in watch mode, this looks for file changes and enables hot-reloading. _This can't run in detach mode. `ctrl+c` stops the container, you will need to run the stop container with `-v` to clear volumes._
 
@@ -78,7 +79,7 @@ To stop the container, run:
 ```sh
 docker-compose down
 or
-docker-compose down -v # to remove the volumes, this will need to re-do the setup | [DEV] 
+docker-compose down -v # to remove the volumes, this will need to re-do the setup | DEV
 ```
 
 ## Documentation
