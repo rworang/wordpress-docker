@@ -35,8 +35,7 @@ services:
         "-c",
         "dos2unix /usr/local/bin/init/setup-alpine.sh && \
         chmod +x /usr/local/bin/init/setup-alpine.sh && \
-        /usr/local/bin/init/setup-alpine.sh && \
-        su -s /bin/sh -c '/usr/local/bin/init/setup.sh' www-data",
+        /usr/local/bin/init/setup-alpine.sh",
       ]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
@@ -47,6 +46,7 @@ services:
       - wordpress:${WORDPRESS_PATH}/
       - ./dockerfiles/wpcli/init:/usr/local/bin/init
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+      - bin:/usr/local/bin
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
       - debug:/var/www/html/wp-content/debug.log
     networks:
@@ -85,6 +85,7 @@ services:
 volumes:
   wordpress:
   plugins:
+  bin:
   debug:
   mysql:
 

@@ -6,7 +6,7 @@ apk add --upgrade apk-tools
 apk upgrade --no-cache
 apk add --no-cache mysql-client mariadb-connector-c dos2unix bash jq
 
-if [ ! -f /usr/local/bin/apline-setup-completed ]; then
+if [ ! -f /usr/local/bin/alpine-setup-completed ]; then
 
   dos2unix /usr/local/bin/init/activate-plugins.sh
   dos2unix /usr/local/bin/init/generate-products.sh
@@ -25,3 +25,7 @@ if [ ! -f /usr/local/bin/apline-setup-completed ]; then
   touch /usr/local/bin/alpine-setup-completed
 
 fi
+
+# could add a check here to see if everything is set up already
+# now I have it on the separate setups, so I don't need to do it here
+/usr/local/bin/init/setup.sh

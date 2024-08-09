@@ -9,16 +9,28 @@ done
 echo "Database is ready"
 
 # WordPress setup
-source /usr/local/bin/init/wordpress-setup.sh
+if [ ! -f /usr/local/bin/wordpress-setup-completed ]; then
+    su -s /bin/sh -c 'source /usr/local/bin/init/wordpress-setup.sh' www-data
+    touch /tmp/wordpress-setup-completed
+fi
 
 # WooCommerce setup
-source /usr/local/bin/init/woocommerce-setup.sh
+if [ ! -f /usr/local/bin/woocommerce-setup-completed ]; then
+    su -s /bin/sh -c 'source /usr/local/bin/init/woocommerce-setup.sh' www-data
+    touch /usr/local/bin/woocommerce-setup-completed
+fi
 
 # Generate random products
-source /usr/local/bin/init/generate-products.sh
+if [ ! -f /usr/local/bin/products-generated ]; then
+    source /usr/local/bin/init/generate-products.sh
+    touch /usr/local/bin/products-generated
+fi
+
+# Install plugins
+# source /usr/local/bin/init/install-plugins.sh
 
 # Enable local plugins
-source /usr/local/bin/init/activate-plugins.sh
+# su -s /bin/sh -c 'source /usr/local/bin/init/activate-plugins.sh' www-data
 
 # Keep the container running
 tail -f /dev/null
