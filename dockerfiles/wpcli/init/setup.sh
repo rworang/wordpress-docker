@@ -30,7 +30,7 @@ fi
 source /tmp/init/install-plugins.sh
 
 # Enable local plugins
-# su -s /bin/sh -c 'source /tmp/init/activate-plugins.sh' www-data
+source /tmp/init/activate-plugins.sh
 
 # Keep the container running
 tail -f /dev/null

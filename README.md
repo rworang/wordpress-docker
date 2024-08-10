@@ -1,101 +1,112 @@
-# WordPress & WooCommerce Docker Container
+# WordPress Development Environment with Docker
 
-This Docker container runs a self-hosted WordPress site tailored for development. The site is available at `http://localhost:8080/`, and phpMyAdmin can be accessed at `http://localhost:8181/`.
+This repository contains a Docker-based development environment for WordPress, including a MySQL database, phpMyAdmin, and WP-CLI.
 
-The container includes a pre-configured WordPress admin account:
+## Prerequisites
 
-- **Username:** `root`
-- **Password:** `root`
-- **MySQL Username:** `root`
-- **MySQL Password:** _None_
+- [Docker](https://www.docker.com/get-started) installed on your machine
+- [Docker Compose](https://docs.docker.com/compose/) (usually comes with Docker)
 
-These credentials, along with other configuration details, can be found in the [`.env`](.env) file.
+## Getting Started
 
-## Table of Contents
+1. **Clone the Repository:**
 
-- [WordPress Plugins](#wordpress-plugins)
-  - [WooCommerce](#woocommerce)
-  - [Allergens and Dietary](#allergens-and-dietary)
-- [Using the Container](#using-the-container)
-  - [Starting the Container](#starting-the-container)
-  - [Starting the Container DEV](#starting-the-container-dev)
-  - [Stopping the Container](#stopping-the-container)
-- [Documentation](#documentation)
-- [Resources](#resources)
+   ```bash
+   git clone https://github.com/yourusername/your-repo.git
+   cd your-repo
+   ```
 
-## WordPress Plugins
+2. **Create a `.env` file:**
 
-### WooCommerce
+   Create a `.env` file in the root of the project to store environment variables such as MySQL root password, database name, etc. The file should look something like this:
 
-The WordPress instance includes WooCommerce, which is downloaded and installed using the [WordPress CLI](https://developer.wordpress.org/cli/commands/).  
-_Note: You still need to skip the WooCommerce setup wizard and select a country._
+   ```env
+   MYSQL_ROOT_PASSWORD=your_root_password
+   MYSQL_DATABASE=your_database
+   MYSQL_USER=your_user
+   MYSQL_PASSWORD=your_password
 
-### Allergens and Dietary
+   WORDPRESS_DB_HOST=mysql:3306
+   WORDPRESS_DB_USER=your_user
+   WORDPRESS_DB_PASSWORD=your_password
+   WORDPRESS_DB_NAME=your_database
+   WORDPRESS_PATH=/var/www/html
+   PLUGIN_NAME=your_plugin_name
+   ```
 
-This plugin was previously managed as a [`submodule`](https://github.blog/open-source/git/working-with-submodules/), but for simplicity that is removed. It is expected to manage that yourself, either by a symbolic link, managing GitHub Desktop to place the plugin root inside the `work_dir/plugins/PLUGIN_NAME` folder (PLUGIN_NAME needs to be the same as the value in the `.env`).
+3. **Build and Start the Containers:**
 
-## Using the Container
+   Run the following command to build and start all the services defined in the `docker-compose.yml`:
 
-For development usage you can create a new repository from this template, in the top right there is the green `Use this template` button, it creates a copy of this repository on your account without the commit history.
+   ```bash
+   docker-compose up -d
+   ```
 
-The reason this is a template is because when working with multiple accounts it's easier to just quickly create a new repo from the template on the account that has permission to view/work on the private repository. Linking the plugin to that repository would/should not cause any permission issues.
+4. **Access the Services:**
 
-### Linking the Plugin Directory
+   - **WordPress:** Open your browser and go to [http://localhost:8080](http://localhost:8080)
+   - **phpMyAdmin:** Open your browser and go to [http://localhost:8181](http://localhost:8181)
+   - **WP-CLI:** You can use the `wd_wpcli` container to run WP-CLI commands:
 
-- Submodule:<br>
-  You can use the `submodule` option but you'll need to figure that out, I don't think it is needed in this environment. _This will cause permission issues if not used correctly._
+     ```bash
+     docker exec -it wd_wpcli wp --info
+     ```
 
-- Symbolic link:<br>
-  I prefer to create a symbolic link called `allergens-dietary-ictoria` inside the `plugins` folder that links to the root of the plugin. _This is not the same as a shortcut._
+## Container Overview
 
-  ```sh
-  # https://www.man7.org/linux/man-pages/man1/ln.1.html
-  ln -s <source_dir> <link>
+- **MySQL (`wd_mysql`):**
+
+  - Stores the WordPress database.
+  - Configuration is done through the `.env` file.
+  - Data is persisted using a Docker volume.
+
+- **WordPress (`wd_wp`):**
+
+  - Serves the WordPress site.
+  - Exposes port 8080 to your localhost.
+  - Mounts the WordPress core and plugin development directories.
+
+- **WP-CLI (`wd_wpcli`):**
+
+  - Provides a command-line interface for WordPress.
+  - Can be used for running WP-CLI commands.
+  - Automatically syncs with the WordPress and plugin directories.
+
+- **phpMyAdmin (`wd_phpmyadmin`):**
+  - Provides a web-based interface for managing the MySQL database.
+  - Exposes port 8181 to your localhost.
+
+## Development
+
+To develop your WordPress plugin:
+
+1. Place your plugin source code in the `./work_dir/plugins/${PLUGIN_NAME}` directory.
+2. The plugin will be automatically synced and available in the WordPress installation.
+
+## Stopping the Containers
+
+To stop the containers, run:
+
+```bash
+docker-compose down
+```
+
+This will stop and remove the containers, but your data will be preserved in the Docker volumes.
+
+## Troubleshooting
+
+- If you encounter any issues, try rebuilding the containers:
+
+  ```bash
+  docker-compose up -d --build
   ```
 
-- GitHub Desktop:<br>
-  You can also manage it through GitHub Desktop, you'll just need to make sure you link and place the directories correctly.
+- Check the logs for any errors:
 
-### Starting the Container
+  ```bash
+  docker-compose logs -f
+  ```
 
-Start the container with wait for it to be finished, this can be seen in Docker under the logs of `local/wpcli`:
+## License
 
-```sh
-docker-compose up -d # detach
-```
-
-### Starting the Container DEV
-
-For development you can run the container in watch mode, this looks for file changes and enables hot-reloading. _This can't run in detach mode. `ctrl+c` stops the container._
-
-```sh
-docker compose --profile develop up --watch
-```
-
-### Stopping the Container
-
-To stop the container, run:
-
-```sh
-docker-compose down
-or
-docker-compose down -v # to remove the volumes, this will need to re-do the setup | DEV
-```
-
-## Documentation
-
-For further documentation, visit the [docs](docs) directory.
-
-_\* The docs are not created yet and is just the old README and some random stuff._
-
-## Resources
-
-- [Use Docker to create a local WordPress development environment](https://www.massolit-media.com/technical-writing/local-wordpress-development-environment-with-docker/)
-- [How To Install WordPress With Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose)
-- [Understanding CMD and ENTRYPOINT Differences in Docker](https://devtron.ai/blog/cmd-and-entrypoint-differences/)
-- [How Compose works](https://docs.docker.com/compose/compose-application-model/)
-- [Set environment variables within your container's environment](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
-- [WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
-- [Working with submodules](https://github.blog/open-source/git/working-with-submodules/)
-- [Docker Official Image: wordpress](https://hub.docker.com/_/wordpress)
-- [Git Submodules basic explanation](https://gist.github.com/gitaarik/8735255)
+This project is licensed under the MIT License.
