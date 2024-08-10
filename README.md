@@ -18,15 +18,19 @@ This repository provides a Docker-based development environment for WordPress, c
 
 ## 🚀 Getting Started
 <a name="getting-started"></a>
-1. **Clone the Repository:**
+1. **Copy the Repository:**
+
+   Use the `Use this template` button at the top right of this page to create a copy of the repository to your account.<br>
+   This will create a personal clean slate copy of the repository with no commit history, which can then be customized to the users' needs.
+
+   OR
 
    ```bash
    git clone https://github.com/rworang/wordpress-docker.git
    cd wordpress-docker
    ```
-   _\* Or copy repository from `Use this template` button._
 
-2. **Create a `.env` file:**
+3. **Create a `.env` file:**
 
    Create a `.env` file in the root of the project to store environment variables like MySQL root password, database name, etc. There is a `example.env` included that can be copied and adjusted.
 
@@ -61,7 +65,7 @@ This repository provides a Docker-based development environment for WordPress, c
    | `RANDOM_PRODUCT_AMOUNT`          | `6`                     |
    ```
 
-3. **Build the Docker Images:**
+4. **Build the Docker Images:**
 
    Before starting the containers, build the necessary Docker images using:
 
@@ -71,7 +75,7 @@ This repository provides a Docker-based development environment for WordPress, c
 
    This will build the services that require a custom image (e.g., `wd_wpcli`).
 
-4. **Start the Containers with the Develop Profile:**
+5. **Start the Containers with the Develop Profile:**
 
    To start the containers and enable the watcher on the plugins repository, use:
 
@@ -81,7 +85,7 @@ This repository provides a Docker-based development environment for WordPress, c
 
    The `develop` profile will activate configurations like file watchers that automatically sync changes in your plugin directory.
 
-5. **Access the Services:**
+6. **Access the Services:**
 
    - **WordPress:** Open your browser and go to [http://localhost:8080](http://localhost:8080)
    - **phpMyAdmin:** Open your browser and go to [http://localhost:8181](http://localhost:8181)
