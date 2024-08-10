@@ -23,6 +23,7 @@ This repository provides a Docker-based development environment for WordPress, c
    git clone https://github.com/rworang/wordpress-docker.git
    cd wordpress-docker
    ```
+   _\* Or copy repository from `Use this template` button._
 
 2. **Create a `.env` file:**
 
