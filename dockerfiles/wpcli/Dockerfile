@@ -3,25 +3,10 @@ FROM wordpress:cli
 
 USER root
 
-RUN apk update --no-cache && \
-  apk add --upgrade apk-tools && \
-  apk upgrade --no-cache && \
-  apk add --no-cache mysql-client mariadb-connector-c dos2unix bash jq
+RUN apk update --no-cache
+RUN apk add --upgrade apk-tools
+RUN apk upgrade --no-cache
+RUN for i in mysql-client mariadb-connector-c dos2unix bash; do apk add --no-cache $i; done 
 
-COPY init /usr/local/bin/init
-
-RUN dos2unix /usr/local/bin/init/activate-plugins.sh && \
-  dos2unix /usr/local/bin/init/generate-products.sh && \
-  dos2unix /usr/local/bin/init/install-plugins.sh && \
-  dos2unix /usr/local/bin/init/setup.sh && \
-  dos2unix /usr/local/bin/init/woocommerce-setup.sh && \
-  dos2unix /usr/local/bin/init/wordpress-setup.sh
-
-RUN chmod +x /usr/local/bin/init/activate-plugins.sh && \
-  chmod +x /usr/local/bin/init/generate-products.sh && \
-  chmod +x /usr/local/bin/init/install-plugins.sh && \
-  chmod +x /usr/local/bin/init/setup.sh && \
-  chmod +x /usr/local/bin/init/woocommerce-setup.sh && \
-  chmod +x /usr/local/bin/init/wordpress-setup.sh
-
-USER www-data
+ADD --chown=www-data:www-data --chmod=755 init /tmp/init
+RUN for i in /tmp/init/*.sh; do dos2unix $i; done

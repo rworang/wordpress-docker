@@ -2,7 +2,6 @@
 
 # Download WordPress if not already downloaded
 if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
-    echo "Downloading WordPress..."
     wp core download --path="${WORDPRESS_PATH}"
 fi
 
@@ -30,7 +29,6 @@ fi
 
 # Install WordPress if not already installed
 if ! wp core is-installed --path="${WORDPRESS_PATH}"; then
-    echo "Installing WordPress..."
     wp core install \
         --url="${WORDPRESS_SITE_URL}" \
         --title="${WORDPRESS_SITE_TITLE}" \
@@ -38,7 +36,4 @@ if ! wp core is-installed --path="${WORDPRESS_PATH}"; then
         --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
         --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
         --path="${WORDPRESS_PATH}"
-    echo "WordPress installed!"
-else
-    echo "WordPress is already installed."
 fi
