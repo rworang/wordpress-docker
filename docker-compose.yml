@@ -1,6 +1,6 @@
 services:
   mysql:
-    container_name: local_mysql
+    container_name: wd_mysql
     env_file: .env
     image: mysql:latest
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
         ipv4_address: "172.20.0.4"
 
   wordpress:
-    container_name: local_wp
+    container_name: wd_wp
     env_file: .env
     image: wordpress:latest
     user: www-data
@@ -42,13 +42,12 @@ services:
           target: ${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
 
   wpcli:
-    container_name: local_wpcli
+    container_name: wd_wpcli
     env_file: .env
-    image: local/wpcli:develop
+    image: wd/wpcli:develop
     user: www-data
     build:
       context: ./dockerfiles/wpcli
-    entrypoint: ["/bin/bash", "-c", "/tmp/init/setup.sh"]
     depends_on:
       - mysql
       - wordpress
@@ -59,7 +58,6 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      # - ./dockerfiles/wpcli:/tmp/wpcli
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
@@ -73,7 +71,7 @@ services:
           target: /tmp/init
 
   phpmyadmin:
-    container_name: local_phpmyadmin
+    container_name: wd_phpmyadmin
     env_file: .env
     image: phpmyadmin:latest
     ports:
