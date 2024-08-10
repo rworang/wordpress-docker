@@ -18,60 +18,37 @@ This repository provides a Docker-based development environment for WordPress, c
 
 2. **Create a `.env` file:**
 
-   Create a `.env` file in the root of the project to store environment variables like MySQL root password, database name, etc. The file should look like this:
+   Create a `.env` file in the root of the project to store environment variables like MySQL root password, database name, etc. There is a `example.env` included that can be copied and adjusted.
 
-   ```env
-    # WordPress base path
-    WORDPRESS_PATH=/var/www/html
-
-    # Plugin(s) to be loaded
-    # Adding more plugins can be done by adding PLUGIN_NAME_*
-    # You will need to find PLUGIN_NAME and duplicate whatever it uses like, watch, activate-plugin
-    PLUGIN_NAME=plugin-name-goes-here
-
-    # WordPress setup, also used for WordPress CLI
-    WORDPRESS_DB_HOST=mysql
-    WORDPRESS_DB_USER=root
-    WORDPRESS_DB_PASSWORD=
-    WORDPRESS_DB_NAME=wordpress
-
-    ##-WordPress developer options
-    # https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
-    # WP_DEBUG:default=false
-    WORDPRESS_DEBUG=true
-    # WP_DEBUG_LOG:default=false
-    WORDPRESS_DEBUG_LOG=true
-    # WP_DEBUG_DISPLAY:default=true
-    WORDPRESS_DEBUG_DISPLAY=false
-    # SCRIPT_DEBUG:default=false
-    WORDPRESS_SCRIPT_DEBUG=true
-    ##-
-
-    # MySQL setup
-    MYSQL_DATABASE=wordpress
-    MYSQL_ALLOW_EMPTY_PASSWORD=yes
-
-    # WordPress URL and title
-    WORDPRESS_SITE_URL=http://localhost:8080
-    WORDPRESS_SITE_TITLE=Local Development
-
-    # Default WordPress Admin account
-    WORDPRESS_ADMIN_USER=root
-    WORDPRESS_ADMIN_PASSWORD=root
-    WORDPRESS_ADMIN_EMAIL=admin@root.com
-
-    # WooCommerce store settings
-    WOOCOMMERCE_STORE_ADDRESS=123 WooCommerce St
-    WOOCOMMERCE_STORE_ADDRESS_2=Suite 1
-    WOOCOMMERCE_STORE_CITY=Commerce City
-    WOOCOMMERCE_STORE_COUNTRY=NL
-    WOOCOMMERCE_STORE_POSTCODE=1234 AB
-    WOOCOMMERCE_CURRENCY=EUR
-    WOOCOMMERCE_PRICE_THOUSAND_SEP=.
-    WOOCOMMERCE_PRICE_DECIMAL_SEP=,
-
-    # Number or random products for WooCommerce store
-    RANDOM_PRODUCT_AMOUNT=6
+   ```markdown
+   | **Key**                          | **Value**               |
+   | :------------------------------- | :---------------------- |
+   | `WORDPRESS_PATH`                 | `/var/www/html`         |
+   | `PLUGIN_NAME`                    | `plugin-name-goes-here` |
+   | `WORDPRESS_DB_HOST`              | `mysql`                 |
+   | `WORDPRESS_DB_USER`              | `root`                  |
+   | `WORDPRESS_DB_PASSWORD`          |                         |
+   | `WORDPRESS_DB_NAME`              | `wordpress`             |
+   | `WORDPRESS_DEBUG`                | `true`                  |
+   | `WORDPRESS_DEBUG_LOG`            | `true`                  |
+   | `WORDPRESS_DEBUG_DISPLAY`        | `false`                 |
+   | `WORDPRESS_SCRIPT_DEBUG`         | `true`                  |
+   | `MYSQL_DATABASE`                 | `wordpress`             |
+   | `MYSQL_ALLOW_EMPTY_PASSWORD`     | `yes`                   |
+   | `WORDPRESS_SITE_URL`             | `http://localhost:8080` |
+   | `WORDPRESS_SITE_TITLE`           | `Local Development`     |
+   | `WORDPRESS_ADMIN_USER`           | `root`                  |
+   | `WORDPRESS_ADMIN_PASSWORD`       | `root`                  |
+   | `WORDPRESS_ADMIN_EMAIL`          | `admin@root.com`        |
+   | `WOOCOMMERCE_STORE_ADDRESS`      | `123 WooCommerce St`    |
+   | `WOOCOMMERCE_STORE_ADDRESS_2`    | `Suite 1`               |
+   | `WOOCOMMERCE_STORE_CITY`         | `Commerce City`         |
+   | `WOOCOMMERCE_STORE_COUNTRY`      | `NL`                    |
+   | `WOOCOMMERCE_STORE_POSTCODE`     | `1234 AB`               |
+   | `WOOCOMMERCE_CURRENCY`           | `EUR`                   |
+   | `WOOCOMMERCE_PRICE_THOUSAND_SEP` | `.`                     |
+   | `WOOCOMMERCE_PRICE_DECIMAL_SEP`  | `,`                     |
+   | `RANDOM_PRODUCT_AMOUNT`          | `6`                     |
    ```
 
 3. **Build the Docker Images:**
