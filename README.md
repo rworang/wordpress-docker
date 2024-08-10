@@ -25,6 +25,8 @@ This repository provides a Docker-based development environment for WordPress, c
     WORDPRESS_PATH=/var/www/html
 
     # Plugin(s) to be loaded
+    # Adding more plugins can be done by adding PLUGIN_NAME_*
+    # You will need to find PLUGIN_NAME and duplicate whatever it uses like, watch, activate-plugin
     PLUGIN_NAME=plugin-name-goes-here
 
     # WordPress setup, also used for WordPress CLI
