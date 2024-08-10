@@ -1,6 +1,7 @@
 # WordPress Development Environment with Docker
 
 ![In Development](https://img.shields.io/badge/status-in%20development-orange)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/rworang/wordpress-docker/main)
 ![MIT License](https://img.shields.io/badge/license-MIT-blue)
 
 This repository provides a Docker-based development environment for WordPress, complete with MySQL, phpMyAdmin, and WP-CLI support.
