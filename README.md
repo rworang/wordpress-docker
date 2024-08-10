@@ -5,9 +5,8 @@
 
 This repository provides a Docker-based development environment for WordPress, complete with MySQL, phpMyAdmin, and WP-CLI support.
 
-## Table of Contents
+## 📝 Table of Contents
 
-- [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Container Overview](#container-overview)
 - [Development](#development)
@@ -16,13 +15,8 @@ This repository provides a Docker-based development environment for WordPress, c
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
 
-## Prerequisites
-
-- [Docker](https://www.docker.com/get-started) installed on your machine.
-- [Docker Compose](https://docs.docker.com/compose/) (usually included with Docker).
-
 ## 🚀 Getting Started
-
+<a name="getting-started"></a>
 1. **Clone the Repository:**
 
    ```bash
@@ -96,7 +90,7 @@ This repository provides a Docker-based development environment for WordPress, c
      ```
 
 ## 🛠️ Container Overview
-
+<a name="container-overview"></a>
 - **MySQL (`wd_mysql`):**
 
   - Stores the WordPress database.
@@ -120,21 +114,21 @@ This repository provides a Docker-based development environment for WordPress, c
   - Exposes port 8181 to your localhost.
 
 ## 🧑‍💻 Development
-
+<a name="development"></a>
 To develop your WordPress plugin:
 
 1. Place your plugin source code in the `./work_dir/plugins/${PLUGIN_NAME}` directory.
 2. The plugin will be automatically synced and available in the WordPress installation.
 
 ## ▶️ Starting the Containers
-
+<a name="starting-the-containers"></a>
 To stop the containers, run:
 
 ```bash
 docker-compose --profile develop up -d
 ```
 ## 🛑 Stopping the Containers
-
+<a name="stopping-the-containers"></a>
 To stop the containers, run:
 
 ```bash
@@ -144,7 +138,7 @@ docker-compose down
 This will stop and remove the containers, but your data will be preserved in the Docker volumes.
 
 ## 🔧 Troubleshooting
-
+<a name="troubleshooting"></a>
 - If you encounter issues, try rebuilding the containers:
 
   ```bash
@@ -167,5 +161,5 @@ This will stop and remove the containers, but your data will be preserved in the
   ```
 
 ## 📜 License
-
+<a name="license"></a>
 This project is licensed under the MIT License.
