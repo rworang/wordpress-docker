@@ -10,3 +10,7 @@ RUN for i in mysql-client mariadb-connector-c dos2unix bash; do apk add --no-cac
 
 ADD --chown=www-data:www-data --chmod=755 init /tmp/init
 RUN for i in /tmp/init/*.sh; do dos2unix $i; done
+
+USER www-data
+
+ENTRYPOINT ["/bin/bash", "-c", "/tmp/init/setup.sh"]

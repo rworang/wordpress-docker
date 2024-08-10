@@ -48,7 +48,6 @@ services:
     user: www-data
     build:
       context: ./dockerfiles/wpcli
-    entrypoint: ["/bin/bash", "-c", "/tmp/init/setup.sh"]
     depends_on:
       - mysql
       - wordpress
@@ -59,7 +58,6 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      # - ./dockerfiles/wpcli:/tmp/wpcli
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
