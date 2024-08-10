@@ -3,7 +3,6 @@ services:
     container_name: local_wp
     env_file: .env
     image: wordpress:latest
-    user: www-data
     ports:
       - 8080:80
     depends_on:
