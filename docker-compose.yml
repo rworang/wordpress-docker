@@ -20,7 +20,7 @@ services:
       - mysql
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+      - ./work_dir/plugins:${WORDPRESS_PATH}/wp-content/plugins
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
       development:
@@ -29,8 +29,8 @@ services:
     develop:
       watch:
         - action: sync+restart
-          path: ./work_dir/plugins/${PLUGIN_NAME}
-          target: ${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+          path: ./work_dir/plugins
+          target: ${WORDPRESS_PATH}/wp-content/plugins
 
   wpcli:
     container_name: wd_wpcli
@@ -43,7 +43,7 @@ services:
       - wordpress
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
+      - ./work_dir/plugins:${WORDPRESS_PATH}/wp-content/plugins
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
       development:
