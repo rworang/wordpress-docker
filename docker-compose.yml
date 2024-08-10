@@ -1,6 +1,20 @@
 services:
+  mysql:
+    container_name: wd_mysql
+    env_file: .env
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      development:
+        ipv4_address: "172.20.0.4"
+
   wordpress:
-    container_name: local_wp
+    container_name: wd_wp
     env_file: .env
     image: wordpress:latest
     ports:
@@ -27,20 +41,14 @@ services:
           target: ${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
 
   wpcli:
-    container_name: local_wpcli
+    container_name: wd_wpcli
     env_file: .env
-    image: wordpress:cli
-    user: root
+    image: wd/wpcli:develop
+    build:
+      context: ./dockerfiles/wpcli
     depends_on:
       - mysql
       - wordpress
-    command: [
-        "/bin/sh",
-        "-c",
-        "dos2unix /usr/local/bin/init/setup-alpine.sh && \
-        chmod +x /usr/local/bin/init/setup-alpine.sh && \
-        /usr/local/bin/init/setup-alpine.sh",
-      ]
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -48,9 +56,7 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./dockerfiles/wpcli/init:/usr/local/bin/init
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
-      - bin:/usr/local/bin
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
       development:
@@ -60,24 +66,10 @@ services:
       watch:
         - action: sync+restart
           path: ./dockerfiles/wpcli/init
-          target: /usr/local/bin/init
-
-  mysql:
-    container_name: local_mysql
-    env_file: .env
-    image: mysql:latest
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
-    volumes:
-      - mysql:/var/lib/mysql
-    networks:
-      development:
-        ipv4_address: "172.20.0.4"
+          target: /tmp/init
 
   phpmyadmin:
-    container_name: local_phpmyadmin
+    container_name: wd_phpmyadmin
     env_file: .env
     image: phpmyadmin:latest
     ports:
@@ -94,8 +86,6 @@ services:
 volumes:
   wordpress:
   plugins:
-  bin:
-  debug:
   mysql:
 
 networks:

@@ -9,31 +9,28 @@ done
 echo "Database is ready"
 
 # WordPress setup
-if [ ! -f /usr/local/bin/wordpress-setup-completed ]; then
-    su -s /bin/sh -c 'source /usr/local/bin/init/wordpress-setup.sh' www-data
-    touch /tmp/wordpress-setup-completed
+if [ ! -f /tmp/wordpress-setup-completed ]; then
+    source /tmp/init/wordpress-setup.sh
+    touch /tmp/wordpress-setup-completed && echo "WordPress setup completed"
 fi
 
 # WooCommerce setup
-if [ ! -f /usr/local/bin/woocommerce-setup-completed ]; then
-    su -s /bin/sh -c 'source /usr/local/bin/init/woocommerce-setup.sh' www-data
-    touch /usr/local/bin/woocommerce-setup-completed
+if [ ! -f /tmp/woocommerce-setup-completed ]; then
+    source /tmp/init/woocommerce-setup.sh
+    touch /tmp/woocommerce-setup-completed && echo "WooCommerce setup completed"
 fi
 
 # Generate random products
-if [ ! -f /usr/local/bin/products-generated ]; then
-    source /usr/local/bin/init/generate-products.sh
-    touch /usr/local/bin/products-generated
+if [ ! -f /tmp/products-generated ]; then
+    source /tmp/init/generate-products.sh
+    touch /tmp/products-generated && echo "Products generated"
 fi
 
 # Install plugins
-# source /usr/local/bin/init/install-plugins.sh
+source /tmp/init/install-plugins.sh
 
 # Enable local plugins
-# su -s /bin/sh -c 'source /usr/local/bin/init/activate-plugins.sh' www-data
-
-cp /usr/local/bin/init/wp-config.php ${WORDPRESS_PATH}/wp-config.php
-echo 'copied wp-config.php'
+# su -s /bin/sh -c 'source /tmp/init/activate-plugins.sh' www-data
 
 # Keep the container running
 tail -f /dev/null
