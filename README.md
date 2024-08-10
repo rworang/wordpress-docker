@@ -1,13 +1,27 @@
 # WordPress Development Environment with Docker
 
+![In Development](https://img.shields.io/badge/status-in%20development-orange)
+![MIT License](https://img.shields.io/badge/license-MIT-blue)
+
 This repository provides a Docker-based development environment for WordPress, complete with MySQL, phpMyAdmin, and WP-CLI support.
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Container Overview](#container-overview)
+- [Development](#development)
+- [Starting the Containers](#starting-the-containers)
+- [Stopping the Containers](#stopping-the-containers)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ## Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your machine.
 - [Docker Compose](https://docs.docker.com/compose/) (usually included with Docker).
 
-## Getting Started
+## 🚀 Getting Started
 
 1. **Clone the Repository:**
 
@@ -81,7 +95,7 @@ This repository provides a Docker-based development environment for WordPress, c
      docker exec -it wd_wpcli wp --info
      ```
 
-## Container Overview
+## 🛠️ Container Overview
 
 - **MySQL (`wd_mysql`):**
 
@@ -105,14 +119,21 @@ This repository provides a Docker-based development environment for WordPress, c
   - Provides a web-based interface for managing the MySQL database.
   - Exposes port 8181 to your localhost.
 
-## Development
+## 🧑‍💻 Development
 
 To develop your WordPress plugin:
 
 1. Place your plugin source code in the `./work_dir/plugins/${PLUGIN_NAME}` directory.
 2. The plugin will be automatically synced and available in the WordPress installation.
 
-## Stopping the Containers
+## ▶️ Starting the Containers
+
+To stop the containers, run:
+
+```bash
+docker-compose --profile develop up -d
+```
+## 🛑 Stopping the Containers
 
 To stop the containers, run:
 
@@ -122,7 +143,7 @@ docker-compose down
 
 This will stop and remove the containers, but your data will be preserved in the Docker volumes.
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 - If you encounter issues, try rebuilding the containers:
 
@@ -145,6 +166,6 @@ This will stop and remove the containers, but your data will be preserved in the
   docker-compose --profile develop up -d
   ```
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License.
