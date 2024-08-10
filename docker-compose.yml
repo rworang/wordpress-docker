@@ -17,7 +17,6 @@ services:
     container_name: wd_wp
     env_file: .env
     image: wordpress:latest
-    user: www-data
     ports:
       - 8080:80
     depends_on:
@@ -45,7 +44,6 @@ services:
     container_name: wd_wpcli
     env_file: .env
     image: wd/wpcli:develop
-    user: www-data
     build:
       context: ./dockerfiles/wpcli
     depends_on:
