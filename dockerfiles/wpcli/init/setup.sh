@@ -32,5 +32,6 @@ source /tmp/init/install-plugins.sh
 # Enable local plugins
 source /tmp/init/activate-plugins.sh
 
+echo "WP-CLI setup completed"
 # Keep the container running
 tail -f /dev/null
