@@ -20,7 +20,7 @@ services:
       - mysql
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./work_dir/plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
       development:
@@ -43,7 +43,7 @@ services:
       - wordpress
     volumes:
       - wordpress:${WORDPRESS_PATH}/
-      - ./work_dir/plugins:${WORDPRESS_PATH}/wp-content/plugins
+      - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
     networks:
       development:
