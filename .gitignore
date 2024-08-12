@@ -2,3 +2,6 @@
 .gitmodules
 .env
 !example.env
+
+work_dir/plugins/
+!work_dir/plugins/plugins-go-here
