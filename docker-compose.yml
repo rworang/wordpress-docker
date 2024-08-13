@@ -6,9 +6,6 @@ services:
     restart: unless-stopped
     volumes:
       - mysql:/var/lib/mysql
-    networks:
-      development:
-        ipv4_address: "172.20.0.4"
 
   wordpress:
     container_name: wd_wp
@@ -22,9 +19,6 @@ services:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
-    networks:
-      development:
-        ipv4_address: "172.20.0.2"
 
     develop:
       watch:
@@ -45,9 +39,6 @@ services:
       - wordpress:${WORDPRESS_PATH}/
       - ./work_dir/plugins/${PLUGIN_NAME}:${WORDPRESS_PATH}/wp-content/plugins/${PLUGIN_NAME}
       - plugins:${WORDPRESS_PATH}/wp-content/plugins
-    networks:
-      development:
-        ipv4_address: "172.20.0.3"
 
     develop:
       watch:
@@ -66,18 +57,8 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
-    networks:
-      development:
-        ipv4_address: "172.20.0.5"
 
 volumes:
   wordpress:
   plugins:
   mysql:
-
-networks:
-  development:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.20.0.0/24"
