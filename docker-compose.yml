@@ -32,6 +32,7 @@ services:
     image: wd/wpcli:develop
     build:
       context: ./dockerfiles/wpcli
+    entrypoint: ["/bin/bash", "-c", "/tmp/init/setup.sh"]
     depends_on:
       - mysql
       - wordpress

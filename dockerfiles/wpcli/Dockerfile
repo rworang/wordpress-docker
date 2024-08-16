@@ -16,5 +16,3 @@ RUN for i in /tmp/init/*.sh; do dos2unix $i; done
 
 USER 33:33
 ENV HOME /tmp
-
-ENTRYPOINT ["/bin/bash", "-c", "/tmp/init/setup.sh"]
