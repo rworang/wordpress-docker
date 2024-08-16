@@ -3,23 +3,23 @@
 # Download WordPress if not already downloaded
 if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
     wp core download --path="${WORDPRESS_PATH}"
-fi
 
-# Create wp-config.php if it does not exist
-# if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
-echo "Creating wp-config.php..."
-wp config create \
-    --dbname="${WORDPRESS_DB_NAME}" \
-    --dbuser="${WORDPRESS_DB_USER}" \
-    --dbpass="${WORDPRESS_DB_PASSWORD}" \
-    --dbhost="${WORDPRESS_DB_HOST}" \
-    --path="${WORDPRESS_PATH}"
+    # Create wp-config.php if it does not exist
+    # if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
+    echo "Creating wp-config.php..."
+    wp config create \
+        --dbname="${WORDPRESS_DB_NAME}" \
+        --dbuser="${WORDPRESS_DB_USER}" \
+        --dbpass="${WORDPRESS_DB_PASSWORD}" \
+        --dbhost="${WORDPRESS_DB_HOST}" \
+        --path="${WORDPRESS_PATH}"
 
-wp config set WP_DEBUG true --path="${WORDPRESS_PATH}"
-wp config set WP_DEBUG_LOG true --path="${WORDPRESS_PATH}"
-wp config set WP_DEBUG_DISPLAY false --path="${WORDPRESS_PATH}"
-wp config set SCRIPT_DEBUG true --path="${WORDPRESS_PATH}"
+    wp config set WP_DEBUG true --path="${WORDPRESS_PATH}"
+    wp config set WP_DEBUG_LOG true --path="${WORDPRESS_PATH}"
+    wp config set WP_DEBUG_DISPLAY false --path="${WORDPRESS_PATH}"
+    wp config set SCRIPT_DEBUG true --path="${WORDPRESS_PATH}"
 # fi
+fi
 
 # Create the database if it does not exist
 if ! wp db check --path="${WORDPRESS_PATH}"; then

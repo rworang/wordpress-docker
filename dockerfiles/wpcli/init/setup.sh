@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Wait for the database to be ready
 echo "Checking database connection..."
 until mysqladmin ping -h"$WORDPRESS_DB_HOST" --silent; do
